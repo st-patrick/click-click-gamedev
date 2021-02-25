@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Click Click Gamedev</title>
+</head>
+<body>
+
+<h1>Welcome to Click Click Gamedev</h1>
+<h3>make a game by clicking on the game-making button:</h3>
+
+<button onclick="makeGame();">Make a game now</button>
+
+<br><br>
+<span style="background: #ff3333;" id="status"></span><br>
+<br>
+
+<div id="statistics">
+
+</div>
+
+</body>
+
+<script>
+    let statistics = {
+        'games_made': 0,
+    }
+
+    var gamemade = false;
+    let statusContainer = document.getElementById('status');
+    let statisticsContainer = document.getElementById('statistics');
+
+    function makeGame() {
+        gamemade = true;
+        statistics.games_made++;
+        updateStatus("Game made");
+        updateStatistics();
+    }
+
+    function updateStatus(message) {
+        statusContainer.innerHTML = message;
+    }
+
+    function updateStatistics(){
+        statisticsContainer.innerHTML = "games made: " + statistics.games_made + "<br>";
+    }
+</script>
+
+</html>
