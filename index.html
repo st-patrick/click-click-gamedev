@@ -10,10 +10,12 @@
 <h3>make a game by clicking on the game-making button:</h3>
 
 <button onclick="makeGame();">Make a game now</button><br>
-<button onclick="hireDev();">Hire a dev</button>
+<button onclick="hireDev();">Hire a dev</button><br>
+A dev costs 12.5 money per second
+
 
 <br><br>
-<span style="background: #ff3333;" id="status"></span><br>
+<span style="background: #aaaaff;" id="status"></span><br>
 <br>
 
 <div id="statistics">
@@ -28,7 +30,8 @@
     // if values already exist, keep them. Otherwise, initialize with 0
     gameState.games_made |= 0;
     gameState.devs_hired |= 0;
-    gameState.money = 0.0;
+    gameState.money |= 0;
+    gameState.time_played |= 0;
 
 
     var gamemade = false;
@@ -46,16 +49,22 @@
 
     function gameLoopUpdate() {
         setTimeout(gameLoopUpdate, 1000);
+        gameState.time_played++;
         gameState.money++;
+        gameState.money -= gameState.devs_hired * 0.125;
         updateStatistics()
     }
 
     function makeGame() {
-        gameState.money -= 2;
-        gamemade = true;
-        gameState.games_made++;
-        updateStatus("Game made");
-        updateStatistics();
+        if (gameState.money < 2) {
+            updateStatus("not enough money");
+        } else {
+            gameState.money -= 2;
+            gamemade = true;
+            gameState.games_made++;
+            updateStatus("Game made");
+            updateStatistics();
+        }
     }
 
     function hireDev() {
@@ -66,12 +75,18 @@
 
     function updateStatus(message) {
         statusContainer.innerHTML = message;
+        setTimeout(clearUpdate, 3000); // clear status message after 3 seconds
+    }
+
+    function clearUpdate() {
+        statusContainer.innerHTML = "";
     }
 
     function updateStatistics(){
         statisticsContainer.innerHTML = "money: " + gameState.money * 100 + "<br>";
         statisticsContainer.innerHTML += "games made: " + gameState.games_made + "<br>";
         statisticsContainer.innerHTML += "devs hired: " + gameState.devs_hired + "<br>";
+        statisticsContainer.innerHTML += "time played in seconds: " + gameState.time_played + "<br>";
     }
 
 </script>
