@@ -22,17 +22,25 @@
 </body>
 
 <script>
-    let statistics = {
-        'games_made': 0,
+    let gameState = window.localStorage;
+
+    if (gameState.length == 0) { // no savegame
+        gameState.games_made = 0;
     }
 
     var gamemade = false;
     let statusContainer = document.getElementById('status');
     let statisticsContainer = document.getElementById('statistics');
 
+    init();
+
+    function init() {
+        updateStatistics();
+    }
+
     function makeGame() {
         gamemade = true;
-        statistics.games_made++;
+        gameState.games_made++;
         updateStatus("Game made");
         updateStatistics();
     }
@@ -42,7 +50,7 @@
     }
 
     function updateStatistics(){
-        statisticsContainer.innerHTML = "games made: " + statistics.games_made + "<br>";
+        statisticsContainer.innerHTML = "games made: " + gameState.games_made + "<br>";
     }
 </script>
 
