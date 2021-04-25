@@ -32,29 +32,37 @@ A dev costs 12.5 money per second
     gameState.devs_hired |= 0;
     gameState.money |= 0;
     gameState.time_played |= 0;
-
+    gameState.running_costs |= 0;
 
     var gamemade = false;
+
+    // get containers for displaying info
     let statusContainer = document.getElementById('status');
     let statisticsContainer = document.getElementById('statistics');
 
     init();
 
+    // initialize the game
     function init() {
-        updateStatistics();
+        // PLACEHOLDER other things we need to setup when the site is visited, before the game loop
 
         // start game loop
         gameLoopUpdate();
     }
 
+    // actual game loop.
+    // update money available, time played, ...
     function gameLoopUpdate() {
         setTimeout(gameLoopUpdate, 1000);
         gameState.time_played++;
         gameState.money++;
-        gameState.money -= gameState.devs_hired * 0.125;
+        gameState.money -= gameState.running_costs;
         updateStatistics()
     }
 
+    // process making a game. Subtract money, etc..
+    // TODO make the game create additional income
+    // TODO make the game take time to get done. It'll get done faster with few more devs
     function makeGame() {
         if (gameState.money < 2) {
             updateStatus("not enough money");
@@ -67,8 +75,10 @@ A dev costs 12.5 money per second
         }
     }
 
+    // TODO influence time for game to get done
     function hireDev() {
         gameState.devs_hired++;
+        addRunningCosts(0.125);
         updateStatus("Dev hired");
         updateStatistics();
     }
@@ -87,6 +97,12 @@ A dev costs 12.5 money per second
         statisticsContainer.innerHTML += "games made: " + gameState.games_made + "<br>";
         statisticsContainer.innerHTML += "devs hired: " + gameState.devs_hired + "<br>";
         statisticsContainer.innerHTML += "time played in seconds: " + gameState.time_played + "<br>";
+        statisticsContainer.innerHTML += "running costs: " + gameState.running_costs + "<br>";
+    }
+
+    // adds some cost to be subtracted each second, e.g. devs
+    function addRunningCosts(amount) {
+        gameState.running_costs += amount;
     }
 
 </script>
